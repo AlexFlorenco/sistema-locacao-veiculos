@@ -7,59 +7,82 @@ var estoque = Estoque();
 void main() {
   String? operacao;
   print("""
-Selecione uma operação:
-    1. Adicionar veículo
-    // 2. Remover veículos
-    3. Mostrar todos os veículos
-    // 4. Mostrar veículos disponíveis
-    // 5. Faturamento do Dia
-    // 6. Orçamento
-    // 7. Orçamento com desconto
-    0. Sair
-    """);
+\nSELECIONE UMA OPERAÇÂO:
+  1. Adicionar veículo
+  2. Remover veículo
+  3. Mostrar todos os veículos
+  // 4. Mostrar veículos disponíveis
+  // 5. Faturamento do Dia
+  // 6. Orçamento
+  // 7. Orçamento com desconto
+  0. Sair""");
 
   while (operacao != "0") {
-    stdout.write(">>> ");
+    stdout.write("\n>>> ");
     operacao = stdin.readLineSync();
 
     switch (operacao) {
       case "1":
-        print("Adicionar Veículo");
+        print("\nADICIONAR VEÍCULO:");
         stdout.write("Placa: ");
-        String? placa = stdin.readLineSync();
+        var placa = stdin.readLineSync();
 
         stdout.write("Marca: ");
-        String? marca = stdin.readLineSync();
+        var marca = stdin.readLineSync();
 
         stdout.write("Modelo: ");
-        String? modelo = stdin.readLineSync();
+        var modelo = stdin.readLineSync();
 
         stdout.write("Ano: ");
-        String? anoFabricacao = stdin.readLineSync();
+        var anoFabricacao = stdin.readLineSync();
 
         stdout.write("Valor da Diária: ");
-        String? valorDiaria = stdin.readLineSync();
+        var valorDiaria = stdin.readLineSync();
 
         if (placa != null &&
             marca != null &&
             modelo != null &&
             anoFabricacao != null &&
             valorDiaria != null) {
-          var veiculo = Veiculo(placa, marca, modelo, anoFabricacao, true,
-              double.parse(valorDiaria));
-          estoque.add(veiculo);
+          if (placa != "" &&
+              marca != "" &&
+              modelo != "" &&
+              anoFabricacao != "" &&
+              valorDiaria != "") {
+            estoque.add(Veiculo(placa, marca, modelo, anoFabricacao, true,
+                double.parse(valorDiaria)));
+            print("VEÍCULO ADICIONADO!");
+          } else {
+            print("ERRO: TODAS INFORMAÇÕES DEVEM SER PREENCHIDAS!");
+          }
+        }
+      case "2":
+        print("\nREMOVER VEÍCULO");
+        stdout.write("Placa: ");
+        String? veiculoASerRemovido = stdin.readLineSync();
+
+        if (veiculoASerRemovido != null) {
+          if (estoque.del(veiculoASerRemovido)) {
+            print("VEÍCULO REMOVIDO!");
+          } else {
+            print("ERRO: VEÍCULO NÃO ENCONTRADO!");
+          }
+        } else {
+          print("ERRO: INFORMAÇÃO INVÁLIDA!");
         }
 
       case "3":
-        print("Todos os Veículos");
-        estoque.showAll();
+        print("\nLISTAR VEÍCULOS");
+        if (!estoque.showAll()) {
+          print("ESTOQUE VAZIO!");
+        }
 
       case "0":
         print("Saindo...");
         break;
 
       default:
-        print("Inválido!");
+        print("OPERAÇÃO INVÁLIDA!");
     }
   }
 }
