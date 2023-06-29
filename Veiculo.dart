@@ -9,6 +9,6 @@ class Veiculo {
   Veiculo(this.placa, this.marca, this.modelo, this.anoFabricacao,
       this.estaDisponivel, this.valorDiaria);
 
-  void exibirVeiculo() => print(
+  void exibirInformacoesVeiculo() => print(
       "$marca $modelo $anoFabricacao\nPlaca: $placa\nDisponível:$estaDisponivel\nDiária:$valorDiaria\n");
 }
