@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'Veiculo.dart';
 import 'Estoque.dart';
@@ -11,10 +12,10 @@ void main() {
   1. Adicionar veículo
   2. Remover veículo
   3. Mostrar todos os veículos
-  // 4. Mostrar veículos disponíveis
-  // 5. Faturamento do Dia
-  // 6. Orçamento
-  // 7. Orçamento com desconto
+  4. Mostrar veículos disponíveis
+  5. Faturamento do Dia
+  6. Orçamento
+  7. Orçamento com desconto
   0. Sair""");
 
   while (operacao != "0") {
@@ -56,6 +57,7 @@ void main() {
             print("ERRO: TODAS INFORMAÇÕES DEVEM SER PREENCHIDAS!");
           }
         }
+
       case "2":
         print("\nREMOVER VEÍCULO");
         stdout.write("Placa: ");
@@ -75,6 +77,75 @@ void main() {
         print("\nLISTAR VEÍCULOS");
         if (!estoque.showAll()) {
           print("ESTOQUE VAZIO!");
+        }
+
+      case "4":
+        print("VEÍCULOS DISPONÍVEIS");
+        if (!estoque.showDisponiveis()) {
+          print("ESTOQUE VAZIO!");
+        }
+
+      case "5":
+        print("FATURAMENTO DO DIA");
+        print(estoque.faturamentoDia());
+
+      case "6":
+        print("ORÇAMENTO");
+        stdout.write("Placa: ");
+        String? placa = stdin.readLineSync();
+
+        stdout.write("Quantidade de Dias: ");
+        String? diasLocacao = stdin.readLineSync();
+
+        if (placa != null &&
+            placa != "" &&
+            diasLocacao != null &&
+            diasLocacao != "") {
+          double orcamento = estoque.orcamento(placa, int.parse(diasLocacao));
+          if (orcamento > 0) {
+            print("Valor: $orcamento");
+
+            print("Confirmar locação?");
+            String? confirmacao = stdin.readLineSync();
+            if (confirmacao == "sim") estoque.locar(placa);
+          } else {
+            print("ERRO! VEÍCULO NÃO ENCONTRADO");
+          }
+        } else {
+          print("ERRO! TODAS AS INFORMAÇÕES DEVEM SER VÁLIDAS!");
+        }
+
+      case "7":
+        print("ORÇAMENTO COM DESCONTO");
+        stdout.write("Placa: ");
+        String? placa = stdin.readLineSync();
+
+        stdout.write("Quantidade de Dias: ");
+        String? diasLocacao = stdin.readLineSync();
+
+        stdout.write("Desconto: ");
+        String? desconto = stdin.readLineSync();
+
+        if (placa != null &&
+            placa != "" &&
+            diasLocacao != null &&
+            diasLocacao != "" &&
+            desconto != null &&
+            desconto != "") {
+          double orcamento = estoque.orcamentoDesconto(
+              placa, int.parse(diasLocacao), double.parse(desconto));
+          if (orcamento > 0) {
+            print("Valor: $orcamento");
+
+            print("Confirmar locação?");
+            String? confirmacao = stdin.readLineSync();
+            if (confirmacao == "sim") estoque.locar(placa);
+
+          } else {
+            print("ERRO! VEÍCULO NÃO ENCONTRADO");
+          }
+        } else {
+          print("ERRO! TODAS AS INFORMAÇÕES DEVEM SER VÁLIDAS!");
         }
 
       case "0":
